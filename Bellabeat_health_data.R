@@ -30,6 +30,7 @@ sleep <- as_tibble(read_csv("C:/Users/user/Desktop/DS-Project/Cyclist dataset/CS
 str(activity)
 str(calories)
 str(intensities)
+str(intensity_hour)
 str(steps)
 str(calories_hour)
 str(sleep)
@@ -46,6 +47,7 @@ View(intensities)
 View(steps)
 View(calories_hour)
 View(sleep)
+View(intensity_hour)
 
 # Format the date for all the activity date in all the dataset
 # For activity 
@@ -56,6 +58,7 @@ calories$ActivityDay <- as.Date(calories$ActivityDay, format="%m/%d/%y")
 intensities$ActivityDay <- as.Date(intensities$ActivityDay, format="%m/%d/%y")
 # for steps
 steps$ActivityDay <- as.Date(steps$ActivityDay, format="%m/%d/%y")
+
 # for calories_hour: convert and split date and time
 calories_hour$ActivityHour <- as.POSIXct(calories_hour$ActivityHour, format="
                                          %m/%d/%y %I:%M:%S %P", tz="GMT") 
@@ -63,5 +66,16 @@ calories_hour$ActivityHour <- as.POSIXct(calories_hour$ActivityHour, format="
 calories_hour$date <- as.Date(calories_hour$ActivityHour, format="%m/%d/%y")
 #create a column for time only
 calories_hour$time <- as.Date(calories_hour$ActivityHour, format="%H:%M:%S")
+
+# for sleep
+sleep$SleepDay <- as.Date(sleep$SleepDay, format="%m/%d/%y")
+
+# format date and split into date and time
+intensity_hour$ActivityHour <- as.POSIXct(intensity_hour$ActivityHour, format="
+                                          %m/%d/%y %I:%M:%S %p", tz="GMT")
+
+intensity_hour$date <- as.Date(intensity_hour$ActivityHour, format="%m/%d/%y")
+intensity_hour$time <- as.POSIXct(intensity_hour$ActivityHour, format="%I:%M:%S")
+
 
 
