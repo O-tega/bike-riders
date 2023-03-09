@@ -60,22 +60,25 @@ intensities$ActivityDay <- as.Date(intensities$ActivityDay, format="%m/%d/%y")
 steps$ActivityDay <- as.Date(steps$ActivityDay, format="%m/%d/%y")
 
 # for calories_hour: convert and split date and time
-calories_hour$ActivityHour <- as.POSIXct(calories_hour$ActivityHour, format="
-                                         %m/%d/%y %I:%M:%S %P", tz="GMT") 
+calories_hour$ActivityHour <- as.POSIXct(calories_hour$ActivityHour, 
+                                         format="%m/%d/%Y %I:%M:%S %p", tz="GMT") 
+str(calories_hour$ActivityHour)
 # create a column for date only
 calories_hour$date <- as.Date(calories_hour$ActivityHour, format="%m/%d/%y")
 #create a column for time only
-calories_hour$time <- as.Date(calories_hour$ActivityHour, format="%H:%M:%S")
+calories_hour$time <- format(calories_hour$ActivityHour, format="%H:%M:%S")
 
 # for sleep
 sleep$SleepDay <- as.Date(sleep$SleepDay, format="%m/%d/%y")
 
 # format date and split into date and time
-intensity_hour$ActivityHour <- as.POSIXct(intensity_hour$ActivityHour, format="
-                                          %m/%d/%y %I:%M:%S %p", tz="GMT")
+intensity_hour$ActivityHour <- as.POSIXct(intensity_hour$ActivityHour, 
+                                          format="%m/%d/%Y %I:%M:%S %p", tz="GMT")
 
 intensity_hour$date <- as.Date(intensity_hour$ActivityHour, format="%m/%d/%y")
-intensity_hour$time <- as.POSIXct(intensity_hour$ActivityHour, format="%I:%M:%S")
+intensity_hour$time <- format(intensity_hour$ActivityHour, format="%H:%M:%S")
+
+str(intensity_hour$time)
 
 
 
