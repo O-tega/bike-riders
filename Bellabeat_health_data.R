@@ -112,9 +112,34 @@ sleep <- unique(sleep)
 sum(duplicated(sleep))
 head(sleep)
 
+# check the total number of distinct values of each dataset to combine them
+table(activity$Id)
+table(calories$Id)
+table(intensities$Id)
+table(intensity_hour$Id)
+table(calories_hour$Id)
+table(steps$Id)
+table(sleep$id)
+
 
 #====================================================================
 # STEP 4: ANALYZE PHASE 
 #====================================================================
+
+# we need to make sense of all important target in the each dataset
+head(activity)
+head(calories)
+head(calories_hour)
+head(intensities)
+head(intensity_hour)
+head(steps)
+head(sleep)
+
+# find correlation in each dataset
+# correlation in activity
+cor(activity$TotalSteps, activity$TotalDistance,
+    method = c("pearson","kendall", "spearman" ))
+
+
 
 
