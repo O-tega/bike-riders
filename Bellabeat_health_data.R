@@ -78,7 +78,43 @@ intensity_hour$ActivityHour <- as.POSIXct(intensity_hour$ActivityHour,
 intensity_hour$date <- as.Date(intensity_hour$ActivityHour, format="%m/%d/%y")
 intensity_hour$time <- format(intensity_hour$ActivityHour, format="%H:%M:%S")
 
-str(intensity_hour$time)
 
+#====================================================================
+# STEP 3: EXPLORE AND CLEAN THE DATA 
+#====================================================================
+
+# explore all the data 
+# create a function to check all through the distinct values
+distinct_values <- function(n){
+  for (i in n){
+    print(n_distinct(i))
+  }
+}
+
+values <- c(data.frame(activity$Id), data.frame(intensity_hour$Id),
+            data.frame(intensities$Id), data.frame(calories$Id),
+                  data.frame(calories_hour$Id), data.frame(sleep$Id),
+            data.frame(steps$Id))
+
+distinct_values(values)
+
+
+# check if there are duplicates
+sum(duplicated(activity))
+sum(duplicated(calories))
+sum(duplicated(intensities))
+sum(duplicated(steps))
+sum(duplicated(sleep))
+
+# remove the duplicate in sleep
+sleep <- unique(sleep)
+
+sum(duplicated(sleep))
+head(sleep)
+
+
+#====================================================================
+# STEP 4: ANALYZE PHASE 
+#====================================================================
 
 
