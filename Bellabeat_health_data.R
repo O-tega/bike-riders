@@ -121,7 +121,6 @@ table(calories_hour$Id)
 table(steps$Id)
 table(sleep$id)
 
-
 #====================================================================
 # STEP 4: ANALYZE PHASE 
 #====================================================================
@@ -140,6 +139,52 @@ head(sleep)
 cor(activity$TotalSteps, activity$TotalDistance,
     method = c("pearson","kendall", "spearman" ))
 
+# lets get the summary some fields in the datasets
+summary(activity$TotalDistance)
+summary(calories$Calories)
+colnames(intensities)
+intensities %>%
+  select(SedentaryMinutes, FairlyActiveMinutes, VeryActiveMinutes, LightlyActiveMinutes)%>%
+  summary()
+colnames(sleep)
+sleep%>%
+  select(TotalSleepRecords, TotalMinutesAsleep)%>%
+  summary()
+summary(steps$StepTotal)
 
+#Observation
 
+"Activites from the intensities dataset shows that most of the acticvities where
+from the sedentary minutes then lightly active minutes
 
+the observation shows that people using the device sit most of the time and just 
+do minimal activity 
+
+The average number of calories burn is in line with the standard avergae burnt
+a day
+"
+
+# Next I want to figure out what time that people are most active,
+#Average intensities by time
+intensities_avg_by_time <- intensity_hour %>%
+  group_by(time) %>%
+  drop_na()%>%
+  summarise(mean_intensity = mean(TotalIntensity))
+
+print(intensities_avg_by_time)
+dim(intensities_avg_by_time)
+
+#Average calories burnt by time
+calories_avg_by_time <- calories_hour %>%
+  group_by(time)%>%
+  drop_na()%>%
+  summarise(mean_calories = mean(Calories))
+
+print(calories_avg_by_time)
+
+# combine intensities_avg_by_time and calories_avg_by_time fields together
+
+avg_intensities_calories_by_time <- cbind(intensities_avg_by_time,
+                                          mean_calories = calories_avg_by_time$mean_calories)
+
+View(avg_intensities_calories_by_time)
