@@ -232,3 +232,32 @@ image02 <- calories_avg_by_time %>%
   labs(title = "Average calories by time")
 
 image02
+View(activity)
+
+# create pie chart that shows the average intensities
+
+mean_sedenary_minutes <- mean(intensities$SedentaryMinutes)
+mean_Lightly_active_minutes <- mean(intensities$LightlyActiveMinutes)
+mean_fairly_active_minutes <- mean(intensities$FairlyActiveMinutes)
+mean_very_active_minutes <- mean(intensities$VeryActiveMinutes)
+
+data <- data.frame(
+  mean_values = c(mean_sedenary_minutes, mean_Lightly_active_minutes,
+                  mean_fairly_active_minutes, mean_very_active_minutes),
+  data_label=c("mean_sedenary_minutes", "mean_Lightly_active_minutes",
+          "mean_fairly_active_minutes", "mean_very_active_minutes")
+)
+
+data
+
+data <- data%>%
+  arrange(desc(label))%>%
+  mutate(percent_mean = mean_values/sum(data$mean_values) *100)%>%
+  mutate(ypos = cumsum(percent_mean)-0.5*percent_mean)
+  
+data
+data%>%
+  ggplot(aes(x="", y=percent_mean, fill=data_label))+
+  geom_bar(stat="identity", width=1, color="white")+
+  coord_polar("y", start=0)+
+  theme_void()
