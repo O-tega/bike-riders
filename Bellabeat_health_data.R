@@ -180,7 +180,7 @@ calories_avg_by_time <- calories_hour %>%
   drop_na()%>%
   summarise(mean_calories = mean(Calories))
 
-print(calories_avg_by_time)
+View(calories_avg_by_time)
 
 # combine intensities_avg_by_time and calories_avg_by_time fields together
 
@@ -188,3 +188,76 @@ avg_intensities_calories_by_time <- cbind(intensities_avg_by_time,
                                           mean_calories = calories_avg_by_time$mean_calories)
 
 View(avg_intensities_calories_by_time)
+
+write.csv(avg_intensities_calories_by_time,
+ file="C:/Users/user/Desktop/DS-Project/Cyclist dataset/CSV_dataset/Fitabase_Data/avg_intensities_calories_by_time.csv" )
+
+# Explore sleep patterns if there are any strange occurence 
+
+sleep$weekday <- wday(sleep$SleepDay, label = TRUE)
+
+sleep_avg_by_weekday <- sleep%>%
+  group_by(weekday)%>%
+  summarise(mean_sleep_weekday = mean(TotalMinutesAsleep))
+
+#find the average calories burnt by weekdays
+
+calories$weekday <- wday(calories$ActivityDay, label=TRUE)
+View(calories)
+
+avg_calories_weekday <- calories%>%
+  group_by(weekday)%>%
+  summarise(mean_calories_weekday = mean(Calories))
+
+avg_calories_weekday
+
+#====================================================================
+# STEP 5: VISUALIZE THE DATA 
+#====================================================================
+
+image01 <- intensities_avg_by_time%>%
+  ggplot(aes(x=time, y=mean_intensity))+
+  geom_col(aes(x=time, y=mean_intensity, fill=mean_intensity))+
+  theme(axis.text.x = element_text(angle = 90, color ="blue"))+
+  theme(axis.text.y = element_text(color = "blue"))+
+  labs(title= "Average intensity by time")
+
+image01
+
+image02 <- calories_avg_by_time %>%
+  ggplot(aes(x=time, y=mean_calories))+
+  geom_col(aes(x=time, y=mean_calories, fill=mean_calories))+
+  theme(axis.text.x = element_text(angle = 90, color = "blue"))+
+  theme(axis.text.y = element_text(color="blue"))+
+  labs(title = "Average calories by time")
+
+image02
+View(activity)
+
+# create pie chart that shows the average intensities
+
+mean_sedenary_minutes <- mean(intensities$SedentaryMinutes)
+mean_Lightly_active_minutes <- mean(intensities$LightlyActiveMinutes)
+mean_fairly_active_minutes <- mean(intensities$FairlyActiveMinutes)
+mean_very_active_minutes <- mean(intensities$VeryActiveMinutes)
+
+data <- data.frame(
+  mean_values = c(mean_sedenary_minutes, mean_Lightly_active_minutes,
+                  mean_fairly_active_minutes, mean_very_active_minutes),
+  data_label=c("mean_sedenary_minutes", "mean_Lightly_active_minutes",
+          "mean_fairly_active_minutes", "mean_very_active_minutes")
+)
+
+data
+
+data <- data%>%
+  arrange(desc(label))%>%
+  mutate(percent_mean = mean_values/sum(data$mean_values) *100)%>%
+  mutate(ypos = cumsum(percent_mean)-0.5*percent_mean)
+  
+data
+data%>%
+  ggplot(aes(x="", y=percent_mean, fill=data_label))+
+  geom_bar(stat="identity", width=1, color="white")+
+  coord_polar("y", start=0)+
+  theme_void()
